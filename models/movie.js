@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "cascade",
       })
       // define association here
-      Movie.hasOne(models.Director, {
+      Movie.belongsTo(models.Director, {
         foreignKey: "directorId",
         as: "director",
         // onDelete: "cascade",

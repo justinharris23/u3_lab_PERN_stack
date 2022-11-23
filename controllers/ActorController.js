@@ -36,11 +36,47 @@ const FindAllActors = async (req, res) => {
 // }
 
 //FIND (READ)
-const FindActorMovies = async (req, res) => {
+// const FindActorMovie = async (req, res) => {
+//   try {
+//     const result = await Actor.findByPk(3, {
+//       include: [{ model: Movie, as: "actor_in_movies" }],
+//     })
+//     res.send(result)
+//   } catch (error) {
+//     throw error
+//   }
+// }
+
+//NEW CODE/ANDREWS CODE/TEST
+const FindActorMovie = async (req, res) => {
   try {
-    const result = await Actor.findByPk(3, {
-      include: [{ model: Movie, as: "actor_in_movies" }],
+    let actorId = parseInt(req.params.actorId)
+    const result = await Actor.findAll({
+      where: { id: actorId },
+      include: [
+        {
+          model: Movie,
+          as: "actor_in_movies",
+          attributes: ["id", "title", "directorId", "releaseDate", "genre"],
+          through: { attributes: [] },
+          include: [
+            {
+              model: Director,
+              as: "director",
+              attributes: ["firstName", "lastName"],
+            },
+          ],
+        },
+      ],
+      attributes: ["id", "firstName", "lastName", "birthYear"],
     })
+    // console.log(result[0].dataValues.actor_in_movies)
+    // console.log(result.toJSON())
+    // const director = await Director.findAll(
+    //   {
+    //     where: {id: result.actor_in_movies[0].directorId}
+    //   }
+    // )
     res.send(result)
   } catch (error) {
     throw error
@@ -75,7 +111,7 @@ const DeleteActor = async (req, res) => {
 module.exports = {
   CreateActor,
   FindAllActors,
-  FindActorMovies,
+  FindActorMovie,
   UpdateActor,
   DeleteActor,
 }

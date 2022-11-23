@@ -9,9 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Director.belongsTo(models.Movie, {
-        foreignKey: "actorId",
-        as: "actor_movie",
+      Director.hasMany(models.Movie, {
+        foreignKey: "directorId",
+        as: "directormovies",
         // onDelete: "cascade",
         // onUpdate: "cascade",
       })
